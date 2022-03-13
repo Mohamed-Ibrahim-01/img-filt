@@ -51,3 +51,9 @@ compile_commands.json
 
 # QtCreator local machine specific files for imported projects
 *creator.user*
+
+# ides config
+.code
+.vscode
+.idea
+.eclipse
