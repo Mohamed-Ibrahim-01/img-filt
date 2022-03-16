@@ -118,7 +118,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="reviewBtn">
+         <widget class="QPushButton" name="previewBtn">
           <property name="maximumSize">
            <size>
             <width>108</width>

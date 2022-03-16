@@ -22,10 +22,12 @@ linux {
 
 
 SOURCES += \
+    QTCV.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
+    QTCV.h \
     mainwindow.h
 
 FORMS += \
