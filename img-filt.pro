@@ -24,10 +24,12 @@ linux {
 SOURCES += \
     QTCV.cpp \
     main.cpp \
+    ImgStore.cpp \
     mainwindow.cpp
 
 HEADERS += \
     QTCV.h \
+    ImgStore.h \
     mainwindow.h
 
 FORMS += \
