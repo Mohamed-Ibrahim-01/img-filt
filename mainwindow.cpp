@@ -18,8 +18,16 @@ using namespace cv;
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainWindow) {
     ui->setupUi(this);
+
+    connect(ui->actionOpen_File, &QAction::triggered, this, &MainWindow::loadImage);
 }
 
 MainWindow::~MainWindow() {
     delete ui;
+}
+
+cv::Mat MainWindow::loadImage(){
+    QString imgPath = QFileDialog::getOpenFileName(this, "Open a file", "", "Images (*.png *.xpm *.jpg *.bmb)");
+    cv::Mat image = cv::imread(imgPath.toStdString(), 1);
+    return image;
 }
