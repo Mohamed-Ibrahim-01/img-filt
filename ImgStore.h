@@ -9,12 +9,12 @@
 
 class ImgStore{
     private:
-        std::unordered_map<std::string, cv::Mat> _img_store;
+        std::unordered_map<std::string, cv::Mat> _imgStore;
         ImgStore();
 
     public:
-        cv::Mat get_image(std::string img_name);
-        void add_image(std::string img_name, cv::Mat const & img);
+        cv::Mat getImage(std::string imageName);
+        void addImage(std::string imageName, cv::Mat const & img);
 
         ImgStore(ImgStore const &) = delete;
         ImgStore& operator=(ImgStore const &) = delete;

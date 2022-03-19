@@ -37,13 +37,13 @@ void MainWindow::loadImage(){
 
     std::string imageName = QFileInfo(imgPath).fileName().toStdString();
     cv::Mat image = cv::imread(imgPath.toStdString(), 1);
-    store.add_image(imageName, image);
+    store.addImage(imageName, image);
     emit imageLoaded(true, imageName);
 }
 
 void MainWindow::setLoadedImage(bool loaded, std::string imageName){
     if(loaded){
-        QPixmap lenna = QTCV::mat2QPixmap(store.get_image(imageName));
+        QPixmap lenna = QTCV::mat2QPixmap(store.getImage(imageName));
         ui->shownPic->setPixmap(lenna);
     }
 }

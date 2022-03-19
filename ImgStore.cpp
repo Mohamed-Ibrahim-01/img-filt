@@ -2,7 +2,7 @@
 #include <iostream>
 
 ImgStore::ImgStore(){
-    _img_store = std::unordered_map<std::string, cv::Mat>();
+    _imgStore = std::unordered_map<std::string, cv::Mat>();
 }
 
 ImgStore& ImgStore::get(){
@@ -11,10 +11,10 @@ ImgStore& ImgStore::get(){
 }
 
 
-void ImgStore::add_image(std::string img_name, cv::Mat const & img){
-    _img_store.insert(std::make_pair(img_name, img));
+void ImgStore::addImage(std::string imageName, cv::Mat const & img){
+    _imgStore.insert(std::make_pair(imageName, img));
 }
 
-cv::Mat ImgStore::get_image(std::string img_name){
-    return _img_store[img_name];
+cv::Mat ImgStore::getImage(std::string imageName){
+    return _imgStore[imageName];
 }
