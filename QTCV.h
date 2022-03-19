@@ -1,7 +1,8 @@
 #ifndef QTCV_H
 #define QTCV_H
 
-#include <QtWidgets>
+#include <QImage>
+#include <QPixmap>
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/imgproc/types_c.h"
 

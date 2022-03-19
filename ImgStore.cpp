@@ -1,8 +1,13 @@
 #include "ImgStore.h"
 #include <iostream>
 
+#ifndef updatedImage
+#define updatedImage first
+#define originalImage second
+#endif
+
 ImgStore::ImgStore(){
-    _imgStore = std::unordered_map<std::string, cv::Mat>();
+    _imgStore = std::unordered_map<std::string, QPair<cv::Mat,cv::Mat>>();
 }
 
 ImgStore& ImgStore::get(){
@@ -11,10 +16,21 @@ ImgStore& ImgStore::get(){
 }
 
 
-void ImgStore::addImage(std::string imageName, cv::Mat const & img){
-    _imgStore.insert(std::make_pair(imageName, img));
+void ImgStore::addImage(const std::string& imageName, const cv::Mat& img){
+    _imgStore[imageName] = qMakePair(img,img.clone());
 }
 
-cv::Mat ImgStore::getImage(std::string imageName){
-    return _imgStore[imageName];
+cv::Mat ImgStore::getImage(const std::string& imageName){
+    return _imgStore[imageName].updatedImage;
 }
+
+cv::Mat ImgStore::getOriginalImage(const std::string& imageName){
+    return _imgStore[imageName].originalImage;
+}
+
+void ImgStore::updateImage(const std::string& imageName, const cv::Mat& img){
+    _imgStore[imageName].updatedImage = img;
+}
+
+
+

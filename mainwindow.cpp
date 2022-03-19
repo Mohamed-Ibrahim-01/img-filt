@@ -10,9 +10,9 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/core/core.hpp"
 
-#include <filesystem>
-#include "ImgStore.h"
-namespace fs = std::filesystem;
+//#include <filesystem>
+//#include "ImgStore.h"
+//namespace fs = std::filesystem;
 
 using namespace cv;
 
@@ -41,7 +41,6 @@ void MainWindow::loadImage(){
 }
 
 void MainWindow::setLoadedImage(bool loaded, std::string imageName){
-
     if(loaded){
         QPixmap lenna = QTCV::mat2QPixmap(store.getImage(imageName));
         ui->shownPic->setPixmap(lenna);
@@ -56,7 +55,6 @@ void MainWindow::autoUpadateLabelSize(){
     if (this->currentFileName == "") return;
 
     // get the image stored based on the file name
-    ImgStore& store = ImgStore::get();
     const cv::Mat& image = store.getImage(this->currentFileName);
 
     // calculating the ratio of the image and then calculate the new height based on the current width of the label
