@@ -17,9 +17,8 @@ namespace fs = std::filesystem;
 using namespace cv;
 
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainWindow) {
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , store(ImgStore::get()), ui(new Ui::MainWindow){
     ui->setupUi(this);
-
     connect(ui->actionOpen_File, &QAction::triggered, this, &MainWindow::loadImage);
     connect(this, &MainWindow::imageLoaded, this, &MainWindow::setLoadedImage);
 }
@@ -29,8 +28,6 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::loadImage(){
-    ImgStore& store = ImgStore::get();
-
     QString imgPath = QFileDialog::getOpenFileName(this, "Open an Image", "..", "Images (*.png *.xpm *.jpg *.bmb)");
     if(imgPath.isEmpty()){
         emit imageLoaded(false, "no image");
@@ -44,7 +41,6 @@ void MainWindow::loadImage(){
 }
 
 void MainWindow::setLoadedImage(bool loaded, std::string imageName){
-    ImgStore& store = ImgStore::get();
 
     if(loaded){
         QPixmap lenna = QTCV::mat2QPixmap(store.getImage(imageName));
