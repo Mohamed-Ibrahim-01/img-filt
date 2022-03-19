@@ -20,6 +20,10 @@ class MainWindow : public QMainWindow {
         Ui::MainWindow *ui;
 
     private slots:
-        cv::Mat loadImage();
+        void loadImage();
+        void setLoadedImage(bool loaded, std::string imageName);
+
+    signals:
+        void imageLoaded(bool loaded, std::string imageName);
 };
 #endif // MAINWINDOW_H

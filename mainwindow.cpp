@@ -11,6 +11,7 @@
 #include "opencv2/core/core.hpp"
 
 #include <filesystem>
+#include "ImgStore.h"
 namespace fs = std::filesystem;
 
 using namespace cv;
@@ -20,14 +21,29 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainW
     ui->setupUi(this);
 
     connect(ui->actionOpen_File, &QAction::triggered, this, &MainWindow::loadImage);
+    connect(this, &MainWindow::imageLoaded, this, &MainWindow::setLoadedImage);
 }
 
 MainWindow::~MainWindow() {
     delete ui;
 }
 
-cv::Mat MainWindow::loadImage(){
-    QString imgPath = QFileDialog::getOpenFileName(this, "Open a file", "", "Images (*.png *.xpm *.jpg *.bmb)");
+void MainWindow::loadImage(){
+    QString imgPath = QFileDialog::getOpenFileName(this, "Open an Image", "..", "Images (*.png *.xpm *.jpg *.bmb)");
+    if(imgPath.isEmpty()){
+        emit imageLoaded(false, "no image");
+        return;
+    }
+
+    std::string imageName = QFileInfo(imgPath).fileName().toStdString();
     cv::Mat image = cv::imread(imgPath.toStdString(), 1);
-    return image;
+    store.add_image(imageName, image);
+    emit imageLoaded(true, imageName);
+}
+
+void MainWindow::setLoadedImage(bool loaded, std::string imageName){
+    if(loaded){
+        QPixmap lenna = QTCV::mat2QPixmap(store.get_image(imageName));
+        ui->shownPic->setPixmap(lenna);
+    }
 }
