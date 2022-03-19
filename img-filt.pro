@@ -23,6 +23,7 @@ linux {
 
 SOURCES += \
     QTCV.cpp \
+    fourier_transform.cpp \
     histogramEqualization.cpp \
     main.cpp \
     ImgStore.cpp \
