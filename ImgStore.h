@@ -5,7 +5,6 @@
 #include <string>
 #include "QTCV.h"
 
-#define  store ImgStore::get()
 
 class ImgStore{
     private:
