@@ -1,4 +1,5 @@
-#pragma once
+#ifndef IMGSTORE_H
+#define IMGSTORE_H
 
 #include "opencv2/core/core.hpp"
 #include <unordered_map>
@@ -21,3 +22,5 @@ class ImgStore{
         static ImgStore& get();
 
 };
+
+#endif
