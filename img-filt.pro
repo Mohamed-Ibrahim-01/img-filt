@@ -23,11 +23,13 @@ linux {
 
 SOURCES += \
     QTCV.cpp \
+    histogramEqualization.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     QTCV.h \
+    histogramEqualization.h \
     mainwindow.h
 
 FORMS += \
