@@ -25,11 +25,13 @@ SOURCES += \
     QTCV.cpp \
     histogramEqualization.cpp \
     main.cpp \
+    ImgStore.cpp \
     mainwindow.cpp
 
 HEADERS += \
     QTCV.h \
     histogramEqualization.h \
+    ImgStore.h \
     mainwindow.h
 
 FORMS += \

@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QtWidgets>
+#include "opencv2/core/core.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,5 +18,12 @@ class MainWindow : public QMainWindow {
 
     private:
         Ui::MainWindow *ui;
+
+    private slots:
+        void loadImage();
+        void setLoadedImage(bool loaded, std::string imageName);
+
+    signals:
+        void imageLoaded(bool loaded, std::string imageName);
 };
 #endif // MAINWINDOW_H
