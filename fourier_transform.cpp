@@ -1,29 +1,36 @@
-#include "opencv2/core.hpp"
-#include "opencv2/imgproc.hpp"
-#include "opencv2/imgcodecs.hpp"
-#include "opencv2/highgui.hpp"
+#include "fourier_transform.h"
 #include <iostream>
-using namespace cv;
 using namespace std;
 
-int main(int argc, char ** argv)
+Mat convertToFourier(Mat I)
 {
-    const char* filename = argc >=2 ? argv[1] : "lena.jpg";
-    Mat I = imread( samples::findFile( filename ), IMREAD_GRAYSCALE);
-    if( I.empty()){
-        cout << "Error opening image" << endl;
-        return EXIT_FAILURE;
-    }
+    Mat fourier;
+    Mat padded = adjustSize(I);
+
+    // Add to the expanded another plane with zeros
+    Mat planes[] = {Mat_<float>(padded), Mat::zeros(padded.size(), CV_32F)};
+    Mat complexI = constructComplexNumbers(planes);
+    dft(complexI, complexI);
+    return fourier;
+}
+Mat adjustSize(Mat I)
+{
     Mat padded;                            //expand input image to optimal size
     int m = getOptimalDFTSize( I.rows );
     int n = getOptimalDFTSize( I.cols ); // on the border add zero values
+
+
     copyMakeBorder(I, padded, 0, m - I.rows, 0, n - I.cols, BORDER_CONSTANT, Scalar::all(0));
-    Mat planes[] = {Mat_<float>(padded), Mat::zeros(padded.size(), CV_32F)};
+
+    return padded;
+}
+
+Mat constructComplexNumbers(Mat planes[])
+{
     Mat complexI;
-    merge(planes, 2, complexI);         // Add to the expanded another plane with zeros
-    dft(complexI, complexI);            // this way the result may fit in the source matrix
-    // compute the magnitude and switch to logarithmic scale
-    // => log(1 + sqrt(Re(DFT(I))^2 + Im(DFT(I))^2))
+    merge(planes, 2, complexI);
+    return complexI;
+}
     split(complexI, planes);                   // planes[0] = Re(DFT(I), planes[1] = Im(DFT(I))
     magnitude(planes[0], planes[1], planes[0]);// planes[0] = magnitude
     Mat magI = planes[0];

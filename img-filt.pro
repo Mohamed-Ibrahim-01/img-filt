@@ -31,6 +31,7 @@ SOURCES += \
 
 HEADERS += \
     QTCV.h \
+    fourier_transform.h \
     histogramEqualization.h \
     ImgStore.h \
     mainwindow.h
