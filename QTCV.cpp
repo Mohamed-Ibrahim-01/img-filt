@@ -60,8 +60,10 @@ QPixmap QTCV::mat2QPixmap(const cv::Mat& image){
 }
 
 cv::Mat QTCV::QImage2Mat(const QImage& image){
+    // 2 flags to specifiy the the format of the image and if the color swapped from RGB to BGR as it is the default setting for cv::Mat
     int flag;
     bool swapColors = false;
+
     switch (image.format()) {
         // 4 channels, 8 bits
         case QImage::Format_ARGB32:
@@ -87,6 +89,8 @@ cv::Mat QTCV::QImage2Mat(const QImage& image){
         default:
             throw "QTCV::QImage2Mat -> unsupported QImage format";
             break;
+        // a special case as the RGB32 image type takes a space of 4 channels 8bit image so we need to convert it ARGB first then
+        // then convert the ARGB to RGB image
         case QImage::Format_RGB32:
             cv::Mat  mat( image.height(), image.width(),
                                       CV_8UC4,
@@ -98,6 +102,7 @@ cv::Mat QTCV::QImage2Mat(const QImage& image){
             return matnoAlpha;
 
     }
+
     auto convertableImage = swapColors ? image.rgbSwapped() : image;
 
     return cv::Mat(convertableImage.height(),convertableImage.width(),

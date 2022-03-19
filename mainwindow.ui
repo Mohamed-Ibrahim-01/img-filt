@@ -18,345 +18,315 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>800</width>
-    <height>611</height>
+    <width>9999</width>
+    <height>9999</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="">
-    <property name="minimumSize">
-     <size>
-      <width>778</width>
-      <height>422</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>778</width>
-      <height>422</height>
-     </size>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QLabel" name="shownPic">
-       <property name="minimumSize">
-        <size>
-         <width>371</width>
-         <height>420</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>371</width>
-         <height>99999</height>
-        </size>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="scaledContents">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_4">
-       <property name="minimumSize">
-        <size>
-         <width>20</width>
-         <height>420</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>420</height>
-        </size>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Maximum</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QLabel" name="shownFreqPic">
-       <property name="minimumSize">
-        <size>
-         <width>371</width>
-         <height>420</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>371</width>
-         <height>99999</height>
-        </size>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="scaledContents">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>450</y>
-      <width>778</width>
-      <height>110</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>778</width>
-      <height>110</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>778</width>
-      <height>110</height>
-     </size>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QPushButton" name="filter_1_btn">
-         <property name="minimumSize">
-          <size>
-           <width>108</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>108</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Filter name place holder</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="filter_2_btn">
-         <property name="minimumSize">
-          <size>
-           <width>108</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>108</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Filter name place holder</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="filter_3_btn">
-         <property name="minimumSize">
-          <size>
-           <width>109</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>109</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Filter name place holder</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="filter_4_btn">
-         <property name="minimumSize">
-          <size>
-           <width>108</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>108</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Filter name place holder</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="filter_5_btn">
-         <property name="minimumSize">
-          <size>
-           <width>108</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>108</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Filter name place holder</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <item>
-        <spacer name="horizontalSpacer">
-         <property name="minimumSize">
-          <size>
-           <width>283</width>
-           <height>48</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>283</width>
-           <height>48</height>
-          </size>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QPushButton" name="previewBtn">
-         <property name="minimumSize">
-          <size>
-           <width>80</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>80</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Preview</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_3">
-         <property name="minimumSize">
-          <size>
-           <width>20</width>
-           <height>48</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>20</width>
-           <height>48</height>
-          </size>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Maximum</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QPushButton" name="applyBtn">
-         <property name="minimumSize">
-          <size>
-           <width>80</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>80</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Apply</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_2">
-         <property name="minimumSize">
-          <size>
-           <width>283</width>
-           <height>48</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>283</width>
-           <height>48</height>
-          </size>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </widget>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="1" column="0">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QPushButton" name="filter_1_btn">
+          <property name="minimumSize">
+           <size>
+            <width>108</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>108</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Filter name place holder</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="filter_2_btn">
+          <property name="minimumSize">
+           <size>
+            <width>108</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>108</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Filter name place holder</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="filter_3_btn">
+          <property name="minimumSize">
+           <size>
+            <width>109</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>109</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Filter name place holder</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="filter_4_btn">
+          <property name="minimumSize">
+           <size>
+            <width>108</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>108</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Filter name place holder</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="filter_5_btn">
+          <property name="minimumSize">
+           <size>
+            <width>108</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>108</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Filter name place holder</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="minimumSize">
+           <size>
+            <width>283</width>
+            <height>48</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>283</width>
+            <height>48</height>
+           </size>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="previewBtn">
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Preview</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_3">
+          <property name="minimumSize">
+           <size>
+            <width>20</width>
+            <height>48</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>48</height>
+           </size>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Maximum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="applyBtn">
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Apply</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="minimumSize">
+           <size>
+            <width>283</width>
+            <height>48</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>283</width>
+            <height>48</height>
+           </size>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item row="0" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QLabel" name="shownPic">
+        <property name="minimumSize">
+         <size>
+          <width>371</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>99999</width>
+          <height>99999</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_4">
+        <property name="minimumSize">
+         <size>
+          <width>20</width>
+          <height>420</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>20</width>
+          <height>420</height>
+         </size>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Maximum</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="shownFreqPic">
+        <property name="minimumSize">
+         <size>
+          <width>371</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>99999</width>
+          <height>99999</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -364,7 +334,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>25</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

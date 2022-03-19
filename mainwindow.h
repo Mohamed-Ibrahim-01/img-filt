@@ -19,9 +19,12 @@ class MainWindow : public QMainWindow {
         ~MainWindow();
 
     private:
+        std::string currentFileName = "";
         Ui::MainWindow *ui;
+        void resizeEvent(QResizeEvent* event);
 
     private slots:
+        void autoUpadateLabelSize();
         void loadImage();
         void setLoadedImage(bool loaded, std::string imageName);
 

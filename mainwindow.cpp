@@ -34,10 +34,10 @@ void MainWindow::loadImage(){
         return;
     }
 
-    std::string imageName = QFileInfo(imgPath).fileName().toStdString();
+    this->currentFileName = QFileInfo(imgPath).fileName().toStdString();
     cv::Mat image = cv::imread(imgPath.toStdString(), 1);
-    store.addImage(imageName, image);
-    emit imageLoaded(true, imageName);
+    store.addImage(this->currentFileName, image);
+    emit imageLoaded(true, this->currentFileName);
 }
 
 void MainWindow::setLoadedImage(bool loaded, std::string imageName){
@@ -45,5 +45,29 @@ void MainWindow::setLoadedImage(bool loaded, std::string imageName){
     if(loaded){
         QPixmap lenna = QTCV::mat2QPixmap(store.getImage(imageName));
         ui->shownPic->setPixmap(lenna);
+        ui->shownFreqPic->setPixmap(lenna);
+        this->autoUpadateLabelSize();
     }
+}
+
+void MainWindow::autoUpadateLabelSize(){
+    
+    // check if there is fileloaded if not then return
+    if (this->currentFileName == "") return;
+
+    // get the image stored based on the file name
+    ImgStore& store = ImgStore::get();
+    const cv::Mat& image = store.getImage(this->currentFileName);
+
+    // calculating the ratio of the image and then calculate the new height based on the current width of the label
+    int height = lround(double(image.rows)/image.cols * ui->shownPic->width());
+
+    // setting the height of the shown pic and the shown freq pic to maintain the aspect ratio of the image
+    ui->shownPic->setFixedHeight(height);
+    ui->shownFreqPic->setFixedHeight(height);
+}
+
+void MainWindow::resizeEvent(QResizeEvent* event) {
+   QMainWindow::resizeEvent(event);
+   this->autoUpadateLabelSize();
 }
