@@ -19,7 +19,6 @@ using namespace cv;
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainWindow) {
     ui->setupUi(this);
-
     connect(ui->actionOpen_File, &QAction::triggered, this, &MainWindow::loadImage);
     connect(this, &MainWindow::imageLoaded, this, &MainWindow::setLoadedImage);
 }
