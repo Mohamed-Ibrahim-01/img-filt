@@ -5,14 +5,12 @@
 #include "opencv2/imgcodecs.hpp"
 #include "opencv2/highgui.hpp"
 #include <array>
-#include <iostream>
-using namespace std;
-using namespace cv;
 
-Mat convertToFourier(Mat I);
-Mat adjustSize(Mat I);
-Mat constructComplexNumbers(Mat planes[]);
-Mat prepareMagnitude(Mat planes[]);
-array<Mat,4> makeQuarters(Mat magI);
-array<Mat,4> reArrangeQuarters(array<Mat,4> quarters);
+cv::Mat convertToFourier(cv::Mat I);
+cv::Mat adjustSize(cv::Mat I);
+cv::Mat constructComplexNumbers(cv::Mat planes[]);
+cv::Mat prepareMagnitude(cv::Mat planes[]);
+std::array<cv::Mat,4> makeQuarters(cv::Mat magI);
+std::array<cv::Mat,4> reArrangeQuarters(std::array<cv::Mat,4> quarters);
+cv::Mat prepMatForConverting(const cv::Mat& src);
 #endif // FOURIER_TRANSFORM_H
