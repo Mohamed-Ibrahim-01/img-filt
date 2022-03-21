@@ -24,6 +24,7 @@ linux {
 SOURCES += \
     ImgProc.cpp \
     QTCV.cpp \
+    fourier_transform.cpp \
     histogramEqualization.cpp \
     main.cpp \
     ImgStore.cpp \
@@ -32,6 +33,7 @@ SOURCES += \
 HEADERS += \
     ImgProc.h \
     QTCV.h \
+    fourier_transform.h \
     histogramEqualization.h \
     ImgStore.h \
     mainwindow.h
