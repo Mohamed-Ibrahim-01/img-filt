@@ -22,6 +22,7 @@ linux {
 
 
 SOURCES += \
+    ImgProc.cpp \
     QTCV.cpp \
     histogramEqualization.cpp \
     main.cpp \
@@ -29,6 +30,7 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
+    ImgProc.h \
     QTCV.h \
     histogramEqualization.h \
     ImgStore.h \

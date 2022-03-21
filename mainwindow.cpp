@@ -10,21 +10,26 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/core/core.hpp"
 
-//#include <filesystem>
-//#include "ImgStore.h"
-//namespace fs = std::filesystem;
-
 using namespace cv;
 
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , store(ImgStore::get()), ui(new Ui::MainWindow){
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) ,store(ImgStore::get()),
+    imgProc(new OpenCvImgProc), ui(new Ui::MainWindow){
+
     ui->setupUi(this);
     connect(ui->actionOpen_File, &QAction::triggered, this, &MainWindow::loadImage);
     connect(this, &MainWindow::imageLoaded, this, &MainWindow::setLoadedImage);
+
+    connect(ui->filter_1_btn, &QPushButton::released, this, &MainWindow::applyGaussianFilter);
+    connect(ui->filter_2_btn, &QPushButton::released, this, &MainWindow::applyMedianFilter);
+    connect(ui->filter_3_btn, &QPushButton::released, this, &MainWindow::applyAverageFilter);
+    connect(ui->filter_4_btn, &QPushButton::released, this, &MainWindow::applyBilateralFilter);
+    connect(ui->filter_5_btn, &QPushButton::released, this, &MainWindow::applyHistEqualization);
 }
 
 MainWindow::~MainWindow() {
     delete ui;
+    delete imgProc;
 }
 
 void MainWindow::loadImage(){
@@ -68,4 +73,51 @@ void MainWindow::autoUpadateLabelSize(){
 void MainWindow::resizeEvent(QResizeEvent* event) {
    QMainWindow::resizeEvent(event);
    this->autoUpadateLabelSize();
+}
+
+void MainWindow::applyFilter(std::function<void(const cv::Mat&, cv::Mat&)> filter){
+    if (this->currentFileName == "") return;
+
+    const cv::Mat& image = store.getImage(this->currentFileName);
+    cv::Mat filtered;
+
+    filter(image, filtered);
+    QPixmap filteredImage = QTCV::mat2QPixmap(filtered);
+    ui->shownFreqPic->setPixmap(filteredImage);
+}
+
+void MainWindow::applyGaussianFilter(){
+    std::function<void(const cv::Mat&, cv::Mat&)> filter = [=](const cv::Mat& src, cv::Mat& dst) {
+        this->imgProc->gaussianFilter(src, dst);
+    };
+    this->applyFilter(filter);
+}
+
+void MainWindow::applyMedianFilter(){
+    std::function<void(const cv::Mat&, cv::Mat&)> filter = [=](const cv::Mat& src, cv::Mat& dst) {
+        this->imgProc->medianFilter(src, dst);
+    };
+    this->applyFilter(filter);
+}
+
+void MainWindow::applyAverageFilter(){
+    std::function<void(const cv::Mat&, cv::Mat&)> filter = [=](const cv::Mat& src, cv::Mat& dst) {
+        this->imgProc->averageFilter(src, dst);
+    };
+    this->applyFilter(filter);
+}
+
+void MainWindow::applyBilateralFilter(){
+    std::function<void(const cv::Mat&, cv::Mat&)> filter = [=](const cv::Mat& src, cv::Mat& dst) {
+        this->imgProc->bilateralFilter(src, dst);
+    };
+    this->applyFilter(filter);
+}
+
+void MainWindow::applyHistEqualization(){
+    std::function<void(const cv::Mat&, cv::Mat&)> filter = [=](const cv::Mat& src, cv::Mat& dst) {
+        this->imgProc->histEqualize(src, dst);
+    };
+    this->applyFilter(filter);
+
 }
