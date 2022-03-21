@@ -14,9 +14,9 @@ class ImgStore{
         ImgStore();
 
     public:
-        cv::Mat getImage(const std::string& imageName);
+        cv::Mat& getImage(const std::string& imageName);
         void addImage(const std::string& imageName, const cv::Mat& img);
-        cv::Mat getOriginalImage(const std::string& imageName);
+        cv::Mat& getOriginalImage(const std::string& imageName);
         void updateImage(const std::string& imageName, const cv::Mat& img);
 
         ImgStore(ImgStore const &) = delete;

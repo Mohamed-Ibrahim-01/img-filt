@@ -20,11 +20,11 @@ void ImgStore::addImage(const std::string& imageName, const cv::Mat& img){
     _imgStore[imageName] = qMakePair(img,img.clone());
 }
 
-cv::Mat ImgStore::getImage(const std::string& imageName){
+cv::Mat& ImgStore::getImage(const std::string& imageName){
     return _imgStore[imageName].updatedImage;
 }
 
-cv::Mat ImgStore::getOriginalImage(const std::string& imageName){
+cv::Mat& ImgStore::getOriginalImage(const std::string& imageName){
     return _imgStore[imageName].originalImage;
 }
 
