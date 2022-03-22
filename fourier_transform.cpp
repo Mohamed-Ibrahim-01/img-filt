@@ -38,7 +38,7 @@ cv::Mat convertToFourier(const cv::Mat& img){
  * when the size of the image is at the
  * powe of 2, 3 or 5.
 */
-cv::Mat adjustSize(cv::Mat I)
+cv::Mat adjustSize(const cv::Mat& I)
 {
     //expand input image to optimal size
     cv::Mat padded;
@@ -58,7 +58,7 @@ cv::Mat adjustSize(cv::Mat I)
  * fourier result.
 */
 
-cv::Mat constructComplexNumbers(cv::Mat planes[]){
+cv::Mat constructComplexNumbers(const cv::Mat planes[]){
     cv::Mat complexI;
     merge(planes, 2, complexI);
     return complexI;
@@ -76,7 +76,7 @@ cv::Mat constructComplexNumbers(cv::Mat planes[]){
  * then it crops the spectrum, if it has an odd number of rows or columns
  * very triky when using the bitwise & :)
 */
-cv::Mat prepareMagnitude(cv::Mat planes[]){
+cv::Mat prepareMagnitude(const cv::Mat planes[]){
     cv::Mat magI = planes[0];
     magI += cv::Scalar::all(1);
     // switch to logarithmic scale
@@ -92,7 +92,7 @@ cv::Mat prepareMagnitude(cv::Mat planes[]){
  * it uses the Rect function to make 4 equal windows of
  * the magnitude matrix.
 */
-std::array<cv::Mat,4> makeQuarters(cv::Mat magI)
+std::array<cv::Mat,4> makeQuarters(const cv::Mat& magI)
 {
     int cx = magI.cols/2;
     int cy = magI.rows/2;
@@ -113,7 +113,7 @@ std::array<cv::Mat,4> makeQuarters(cv::Mat magI)
  * so that the origin is at the image center
 */
 
-std::array<cv::Mat,4> reArrangeQuarters(std::array<cv::Mat,4> quarters)
+std::array<cv::Mat,4> reArrangeQuarters(const std::array<cv::Mat,4>& quarters)
 {
     cv::Mat tmp;
     // swap quadrants (Top-Left with Bottom-Right)

@@ -41,7 +41,7 @@ QImage QTCV::mat2QImage(const cv::Mat& image){
             flag = QImage::Format_Grayscale8;
             break;
         default:
-            throw "QTCV::mat2QImage -> unsupported cv::Mat type";
+            throw std::invalid_argument("QTCV::mat2QImage -> unsupported cv::Mat type");
             break;
 
     }
@@ -87,7 +87,7 @@ cv::Mat QTCV::QImage2Mat(const QImage& image){
             flag = CV_8UC1;
             break;
         default:
-            throw "QTCV::QImage2Mat -> unsupported QImage format";
+            throw std::invalid_argument("QTCV::QImage2Mat -> unsupported QImage format");
             break;
         // a special case as the RGB32 image type takes a space of 4 channels 8bit image so we need to convert it ARGB first then
         // then convert the ARGB to RGB image

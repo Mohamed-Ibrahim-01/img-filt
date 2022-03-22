@@ -75,7 +75,7 @@ void MainWindow::resizeEvent(QResizeEvent* event) {
    this->autoUpadateLabelSize();
 }
 
-void MainWindow::applyFilter(std::function<void(const cv::Mat&, cv::Mat&)> filter){
+void MainWindow::applyFilter(const std::function<void(const cv::Mat&, cv::Mat&)>& filter){
     if (this->currentFileName == "") return;
 
     cv::Mat& image = store.getImage(this->currentFileName);
