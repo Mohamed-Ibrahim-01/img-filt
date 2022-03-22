@@ -28,6 +28,7 @@ class MainWindow : public QMainWindow {
 
         void resizeEvent(QResizeEvent* event);
         void applyFilter(std::function<void(const cv::Mat&, cv::Mat&)> filter);
+        void displaySpatialandFreq(cv::Mat& spatialImage, cv::Mat& freqImage);
 
     private slots:
         void autoUpadateLabelSize();
@@ -36,8 +37,8 @@ class MainWindow : public QMainWindow {
 
         void applyGaussianFilter();
         void applyMedianFilter();
-        void applyAverageFilter();
-        void applyBilateralFilter();
+        void applyLowPassFilter();
+        void applyHighPassFilter();
         void applyHistEqualization();
 
 

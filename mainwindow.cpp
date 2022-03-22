@@ -10,7 +10,7 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/core/core.hpp"
 
-using namespace cv;
+#include "fourier_transform.h"
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) ,store(ImgStore::get()),
@@ -22,8 +22,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) ,store(ImgStore::g
 
     connect(ui->filter_1_btn, &QPushButton::released, this, &MainWindow::applyGaussianFilter);
     connect(ui->filter_2_btn, &QPushButton::released, this, &MainWindow::applyMedianFilter);
-    connect(ui->filter_3_btn, &QPushButton::released, this, &MainWindow::applyAverageFilter);
-    connect(ui->filter_4_btn, &QPushButton::released, this, &MainWindow::applyBilateralFilter);
+    connect(ui->filter_3_btn, &QPushButton::released, this, &MainWindow::applyLowPassFilter);
+    connect(ui->filter_4_btn, &QPushButton::released, this, &MainWindow::applyHighPassFilter);
     connect(ui->filter_5_btn, &QPushButton::released, this, &MainWindow::applyHistEqualization);
 }
 
@@ -47,10 +47,10 @@ void MainWindow::loadImage(){
 
 void MainWindow::setLoadedImage(bool loaded, std::string imageName){
     if(loaded){
-        QPixmap lenna = QTCV::mat2QPixmap(store.getImage(imageName));
-        ui->shownPic->setPixmap(lenna);
-        ui->shownFreqPic->setPixmap(lenna);
-        this->autoUpadateLabelSize();
+        cv::Mat loadedImage = store.getImage(imageName), loadedImageGray;
+        cv::cvtColor(loadedImage, loadedImageGray, CV_BGR2GRAY);
+        cv::Mat loadedImageGrayFt = convertToFourier(loadedImageGray);
+        this->displaySpatialandFreq(loadedImage, loadedImageGrayFt);
     }
 }
 
@@ -78,12 +78,22 @@ void MainWindow::resizeEvent(QResizeEvent* event) {
 void MainWindow::applyFilter(std::function<void(const cv::Mat&, cv::Mat&)> filter){
     if (this->currentFileName == "") return;
 
-    const cv::Mat& image = store.getImage(this->currentFileName);
-    cv::Mat filtered;
+    cv::Mat& image = store.getImage(this->currentFileName);
+    cv::Mat filtered, imageGray;
 
     filter(image, filtered);
-    QPixmap filteredImage = QTCV::mat2QPixmap(filtered);
-    ui->shownFreqPic->setPixmap(filteredImage);
+
+    cv::cvtColor(filtered, imageGray, CV_BGR2GRAY);
+    cv::Mat loadedImageGrayFt = convertToFourier(imageGray);
+    this->displaySpatialandFreq(filtered, loadedImageGrayFt);
+}
+
+void MainWindow::displaySpatialandFreq(cv::Mat& spatialImage, cv::Mat& freqImage){
+    QPixmap filteredImagePix = QTCV::mat2QPixmap(spatialImage);
+    QPixmap filteredImageFreqPix = QTCV::mat2QPixmap(freqImage);
+    ui->shownPic->setPixmap(filteredImagePix);
+    ui->shownFreqPic->setPixmap(filteredImageFreqPix);
+    this->autoUpadateLabelSize();
 }
 
 void MainWindow::applyGaussianFilter(){
@@ -100,16 +110,17 @@ void MainWindow::applyMedianFilter(){
     this->applyFilter(filter);
 }
 
-void MainWindow::applyAverageFilter(){
+void MainWindow::applyLowPassFilter(){
     std::function<void(const cv::Mat&, cv::Mat&)> filter = [=](const cv::Mat& src, cv::Mat& dst) {
-        this->imgProc->averageFilter(src, dst);
+        this->imgProc->lowPassFilter(src, dst);
     };
     this->applyFilter(filter);
 }
 
-void MainWindow::applyBilateralFilter(){
+void MainWindow::applyHighPassFilter(){
     std::function<void(const cv::Mat&, cv::Mat&)> filter = [=](const cv::Mat& src, cv::Mat& dst) {
-        this->imgProc->bilateralFilter(src, dst);
+        auto mode = imgProc->V_HSV;
+        this->imgProc->highPassFilter(src, dst, mode);
     };
     this->applyFilter(filter);
 }
