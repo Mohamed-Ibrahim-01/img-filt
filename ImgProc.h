@@ -5,12 +5,18 @@
 
 class ImgProc {
     public:
+        enum FilterMode {V_HSV, MULTI_CHANNEL};
+
         virtual ~ImgProc() {}
         virtual void gaussianFilter(const cv::Mat& src, cv::Mat& dst) const = 0;
         virtual void medianFilter(const cv::Mat& src, cv::Mat& dst) const = 0;
-        virtual void averageFilter(const cv::Mat& src, cv::Mat& dst) const = 0;
         virtual void bilateralFilter(const cv::Mat& src, cv::Mat& dst) const = 0;
         virtual void histEqualize(const cv::Mat& src, cv::Mat& dst) const = 0;
+        virtual void lowPassFilter(const cv::Mat& src, cv::Mat& dst) const = 0;
+        virtual void lowPassFilterFreq(const cv::Mat& src, cv::Mat& dst) const = 0;
+        virtual void highPassFilter(const cv::Mat& src, cv::Mat& dst, FilterMode mode = V_HSV) const = 0;
+        virtual void highPassFilterFreq(const cv::Mat& src, cv::Mat& dst) const = 0;
+        virtual void rgbFilter(const cv::Mat& src, cv::Mat& dst, std::function<void(const cv::Mat&, cv::Mat&)> filter) const = 0;
 };
 
 
@@ -40,7 +46,7 @@ class FromScratchImgProc : public ImgProc {
     public:
         void gaussianFilter(const cv::Mat& src, cv::Mat& dst) const override { dst = src; }
         void medianFilter(const cv::Mat& src, cv::Mat& dst) const override { dst = src; }
-        void averageFilter(const cv::Mat& src, cv::Mat& dst) const override { dst = src; }
+        void lowPassFilter(const cv::Mat& src, cv::Mat& dst) const override { dst = src; }
         void bilateralFilter(const cv::Mat& src, cv::Mat& dst) const override { dst = src; }
 };
 
@@ -49,9 +55,13 @@ class OpenCvImgProc : public ImgProc {
     public:
         void gaussianFilter(const cv::Mat& src, cv::Mat& dst) const override;
         void medianFilter(const cv::Mat& src, cv::Mat& dst) const override;
-        void averageFilter(const cv::Mat& src, cv::Mat& dst) const override;
         void bilateralFilter(const cv::Mat& src, cv::Mat& dst) const override;
+        void lowPassFilter(const cv::Mat& src, cv::Mat& dst) const override;
+        void lowPassFilterFreq(const cv::Mat& src, cv::Mat& dst) const override;
         void histEqualize(const cv::Mat& src, cv::Mat& dst) const override;
+        void highPassFilter(const cv::Mat& src, cv::Mat& dst, FilterMode mode = V_HSV) const override;
+        void highPassFilterFreq(const cv::Mat& src, cv::Mat& dst) const override;
+        void rgbFilter(const cv::Mat& src, cv::Mat& dst, std::function<void(const cv::Mat&, cv::Mat&)> filter) const override;
 };
 
 #endif // IMGPROC_H
