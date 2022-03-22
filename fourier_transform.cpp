@@ -1,4 +1,5 @@
 #include "fourier_transform.h"
+#include <stdexcept>
 
 /*
  * function to convert normal image to it's corresponding fourier transform
@@ -12,7 +13,9 @@
  * the logarithmic sclae and rearrangement of it's quarters.
 */
 cv::Mat convertToFourier(const cv::Mat& img){
-    if (img.channels() > 1) throw "Mat convertToFourier(Mat img) only works with 1 channel matrxi";
+    if (img.channels() > 1){
+        throw std::invalid_argument("Mat convertToFourier(Mat img) only works with 1 channel matrix ");
+    }
     cv::Mat padded = adjustSize(img);
     cv::Mat planes[] = {cv::Mat_<float>(padded), cv::Mat::zeros(padded.size(), CV_32F)};
     cv::Mat complexI = constructComplexNumbers(planes);

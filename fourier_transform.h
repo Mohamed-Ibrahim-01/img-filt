@@ -6,7 +6,7 @@
 #include "opencv2/highgui.hpp"
 #include <array>
 
-cv::Mat convertToFourier(cv::Mat I);
+cv::Mat convertToFourier(const cv::Mat& img);
 cv::Mat adjustSize(cv::Mat I);
 cv::Mat constructComplexNumbers(cv::Mat planes[]);
 cv::Mat prepareMagnitude(cv::Mat planes[]);
