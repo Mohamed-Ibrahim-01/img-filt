@@ -18,6 +18,8 @@ class ImgStore{
         void addImage(const std::string& imageName, const cv::Mat& img);
         cv::Mat& getOriginalImage(const std::string& imageName);
         void updateImage(const std::string& imageName, const cv::Mat& img);
+        bool check_Key(const std::string& imageName);
+        void deleteImage(const std::string& imageName);
 
         ImgStore(ImgStore const &) = delete;
         ImgStore& operator=(ImgStore const &) = delete;

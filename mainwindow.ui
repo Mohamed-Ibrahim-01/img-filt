@@ -109,8 +109,14 @@
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_2">
-          <item>
-           <widget class="QLabel" name="label">
+          <item alignment="Qt::AlignHCenter">
+           <widget class="QLabel" name="preview_filter_1">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>58</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
               <width>16777215</width>
@@ -119,6 +125,9 @@
             </property>
             <property name="text">
              <string/>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -126,18 +135,18 @@
            <widget class="QPushButton" name="filter_1_btn">
             <property name="minimumSize">
              <size>
-              <width>108</width>
+              <width>140</width>
               <height>25</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>108</width>
+              <width>140</width>
               <height>25</height>
              </size>
             </property>
             <property name="text">
-             <string>Filter name place holder</string>
+             <string>Gaussion Filter</string>
             </property>
            </widget>
           </item>
@@ -145,8 +154,14 @@
         </item>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_3">
-          <item>
-           <widget class="QLabel" name="label_2">
+          <item alignment="Qt::AlignHCenter">
+           <widget class="QLabel" name="preview_filter_2">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>58</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
               <width>16777215</width>
@@ -155,6 +170,9 @@
             </property>
             <property name="text">
              <string/>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -162,18 +180,18 @@
            <widget class="QPushButton" name="filter_2_btn">
             <property name="minimumSize">
              <size>
-              <width>108</width>
+              <width>140</width>
               <height>25</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>108</width>
+              <width>140</width>
               <height>25</height>
              </size>
             </property>
             <property name="text">
-             <string>Filter name place holder</string>
+             <string>Median Filter</string>
             </property>
            </widget>
           </item>
@@ -181,8 +199,14 @@
         </item>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_4">
-          <item>
-           <widget class="QLabel" name="label_3">
+          <item alignment="Qt::AlignHCenter">
+           <widget class="QLabel" name="preview_filter_3">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>58</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
               <width>16777215</width>
@@ -191,6 +215,9 @@
             </property>
             <property name="text">
              <string/>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -198,18 +225,18 @@
            <widget class="QPushButton" name="filter_3_btn">
             <property name="minimumSize">
              <size>
-              <width>109</width>
+              <width>140</width>
               <height>25</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>109</width>
+              <width>140</width>
               <height>25</height>
              </size>
             </property>
             <property name="text">
-             <string>Filter name place holder</string>
+             <string>Low Pass Filter</string>
             </property>
            </widget>
           </item>
@@ -217,8 +244,14 @@
         </item>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_5">
-          <item>
-           <widget class="QLabel" name="label_4">
+          <item alignment="Qt::AlignHCenter">
+           <widget class="QLabel" name="preview_filter_4">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>58</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
               <width>16777215</width>
@@ -227,6 +260,9 @@
             </property>
             <property name="text">
              <string/>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -234,18 +270,18 @@
            <widget class="QPushButton" name="filter_4_btn">
             <property name="minimumSize">
              <size>
-              <width>108</width>
+              <width>140</width>
               <height>25</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>108</width>
+              <width>140</width>
               <height>25</height>
              </size>
             </property>
             <property name="text">
-             <string>Filter name place holder</string>
+             <string>High Pass Filter</string>
             </property>
            </widget>
           </item>
@@ -253,8 +289,14 @@
         </item>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_6">
-          <item>
-           <widget class="QLabel" name="label_5">
+          <item alignment="Qt::AlignHCenter">
+           <widget class="QLabel" name="preview_filter_5">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>58</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
               <width>16777215</width>
@@ -264,24 +306,27 @@
             <property name="text">
              <string/>
             </property>
+            <property name="scaledContents">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item alignment="Qt::AlignHCenter">
            <widget class="QPushButton" name="filter_5_btn">
             <property name="minimumSize">
              <size>
-              <width>108</width>
+              <width>140</width>
               <height>25</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>108</width>
+              <width>140</width>
               <height>25</height>
              </size>
             </property>
             <property name="text">
-             <string>Filter name place holder</string>
+             <string>Histogram Eqaulization</string>
             </property>
            </widget>
           </item>
@@ -388,7 +433,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_8">
           <item>
-           <widget class="QComboBox" name="comboBox">
+           <widget class="QComboBox" name="imageNamesComboBox">
             <property name="maximumSize">
              <size>
               <width>150</width>
@@ -398,7 +443,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="applyBtn_6">
+           <widget class="QPushButton" name="deleteBtn">
             <property name="minimumSize">
              <size>
               <width>80</width>

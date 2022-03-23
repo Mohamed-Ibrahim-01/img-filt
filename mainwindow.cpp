@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) ,store(ImgStore::g
 
     ui->setupUi(this);
     connect(ui->actionOpen_File, &QAction::triggered, this, &MainWindow::loadImage);
+    connect(ui->actionOpen_File_as_greyscale, &QAction::triggered, this, &MainWindow::loadGreyScaleImage);
     connect(this, &MainWindow::imageLoaded, this, &MainWindow::setLoadedImage);
 
     connect(ui->filter_1_btn, &QPushButton::released, this, &MainWindow::applyGaussianFilter);
@@ -25,33 +26,53 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) ,store(ImgStore::g
     connect(ui->filter_3_btn, &QPushButton::released, this, &MainWindow::applyLowPassFilter);
     connect(ui->filter_4_btn, &QPushButton::released, this, &MainWindow::applyHighPassFilter);
     connect(ui->filter_5_btn, &QPushButton::released, this, &MainWindow::applyHistEqualization);
+
+    connect(ui->resetBtn, &QPushButton::released, this, &MainWindow::resetImage);
+    connect(ui->applyBtn, &QPushButton::released, this, &MainWindow::saveFilteredImage);
+    connect(ui->deleteBtn, &QPushButton::released, this, &MainWindow::deleteCurrentImage);
+    connect(ui->imageNamesComboBox, &QComboBox::currentTextChanged, this, &MainWindow::updateFileName);
+
+    connect(this, &MainWindow::setPreview, this, &MainWindow::showPreview);
 }
 
-MainWindow::~MainWindow() {
+MainWindow::~MainWindow() noexcept{
     delete ui;
     delete imgProc;
 }
 
-void MainWindow::loadImage(){
-    QString imgPath = QFileDialog::getOpenFileName(this, "Open an Image", "..", "Images (*.png *.xpm *.jpg *.bmb)");
-    if(imgPath.isEmpty()){
-        emit imageLoaded(false, "no image");
-        return;
-    }
-
-    this->currentFileName = QFileInfo(imgPath).fileName().toStdString();
-    cv::Mat image = cv::imread(imgPath.toStdString(), 1);
-    store.addImage(this->currentFileName, image);
-    emit imageLoaded(true, this->currentFileName);
+void MainWindow::loadGreyScaleImage(){
+    imageLoader(GreyScale);
 }
 
-void MainWindow::setLoadedImage(bool loaded, std::string imageName){
-    if(loaded){
-        cv::Mat loadedImage = store.getImage(imageName), loadedImageGray;
-        cv::cvtColor(loadedImage, loadedImageGray, CV_BGR2GRAY);
-        cv::Mat loadedImageGrayFt = convertToFourier(loadedImageGray);
-        this->displaySpatialandFreq(loadedImage, loadedImageGrayFt);
-    }
+void MainWindow::loadImage(){
+    imageLoader(RGB);
+}
+
+void MainWindow::imageLoader(const mode& flag){
+    QString imgPath = QFileDialog::getOpenFileName(this, "Open an Image", "..", "Images (*.png *.xpm *.jpg *.bmb)");
+    if(imgPath.isEmpty())
+        return;
+    ui->imageNamesComboBox->addItem(QFileInfo(imgPath).fileName());
+
+    this->currentFileName = QFileInfo(imgPath).fileName().toStdString();
+
+    cv::Mat image = cv::imread(imgPath.toStdString(), flag);
+
+    store.addImage(this->currentFileName, image);
+    emit imageLoaded(true, image);
+    emit setPreview(image);
+}
+
+void MainWindow::setLoadedImage(bool loaded, const cv::Mat& image){
+    if(!loaded || image.empty()) return;
+
+
+    cv::Mat loadedImageGray = image.clone();
+    if (image.type() != CV_8UC1) cv::cvtColor(image, loadedImageGray, CV_BGR2GRAY);
+    cv::Mat loadedImageGrayFt = convertToFourier(loadedImageGray);
+    this->displaySpatialandFreq(image, loadedImageGrayFt);
+    int index = ui->imageNamesComboBox->findText(QString::fromStdString(this->currentFileName));
+    ui->imageNamesComboBox->setCurrentIndex(index);
 }
 
 void MainWindow::autoUpadateLabelSize(){
@@ -68,6 +89,7 @@ void MainWindow::autoUpadateLabelSize(){
     // setting the height of the shown pic and the shown freq pic to maintain the aspect ratio of the image
     ui->shownPic->setFixedHeight(height);
     ui->shownFreqPic->setFixedHeight(height);
+    this->setMinimumHeight(height+230);
 }
 
 void MainWindow::resizeEvent(QResizeEvent* event) {
@@ -79,16 +101,16 @@ void MainWindow::applyFilter(const std::function<void(const cv::Mat&, cv::Mat&)>
     if (this->currentFileName == "") return;
 
     cv::Mat& image = store.getImage(this->currentFileName);
-    cv::Mat filtered, imageGray;
+    cv::Mat filtered;
 
     filter(image, filtered);
-
-    cv::cvtColor(filtered, imageGray, CV_BGR2GRAY);
+    cv::Mat imageGray = filtered.clone();
+    if (filtered.type() != CV_8UC1) cv::cvtColor(filtered, imageGray, CV_BGR2GRAY);
     cv::Mat loadedImageGrayFt = convertToFourier(imageGray);
     this->displaySpatialandFreq(filtered, loadedImageGrayFt);
 }
 
-void MainWindow::displaySpatialandFreq(cv::Mat& spatialImage, cv::Mat& freqImage){
+void MainWindow::displaySpatialandFreq(const cv::Mat& spatialImage, cv::Mat& freqImage){
     QPixmap filteredImagePix = QTCV::mat2QPixmap(spatialImage);
     QPixmap filteredImageFreqPix = QTCV::mat2QPixmap(freqImage);
     ui->shownPic->setPixmap(filteredImagePix);
@@ -97,38 +119,91 @@ void MainWindow::displaySpatialandFreq(cv::Mat& spatialImage, cv::Mat& freqImage
 }
 
 void MainWindow::applyGaussianFilter(){
-    std::function<void(const cv::Mat&, cv::Mat&)> filter = [=](const cv::Mat& src, cv::Mat& dst) {
-        this->imgProc->gaussianFilter(src, dst);
-    };
-    this->applyFilter(filter);
+    this->applyFilter(filterFunctions[0]);
 }
 
 void MainWindow::applyMedianFilter(){
-    std::function<void(const cv::Mat&, cv::Mat&)> filter = [=](const cv::Mat& src, cv::Mat& dst) {
-        this->imgProc->medianFilter(src, dst);
-    };
-    this->applyFilter(filter);
+    this->applyFilter(filterFunctions[1]);
 }
 
 void MainWindow::applyLowPassFilter(){
-    std::function<void(const cv::Mat&, cv::Mat&)> filter = [=](const cv::Mat& src, cv::Mat& dst) {
-        this->imgProc->lowPassFilter(src, dst);
-    };
-    this->applyFilter(filter);
+    this->applyFilter(filterFunctions[2]);
 }
 
 void MainWindow::applyHighPassFilter(){
-    std::function<void(const cv::Mat&, cv::Mat&)> filter = [=](const cv::Mat& src, cv::Mat& dst) {
-        auto mode = imgProc->V_HSV;
-        this->imgProc->highPassFilter(src, dst, mode);
-    };
-    this->applyFilter(filter);
+    this->applyFilter(filterFunctions[3]);
 }
 
 void MainWindow::applyHistEqualization(){
-    std::function<void(const cv::Mat&, cv::Mat&)> filter = [=](const cv::Mat& src, cv::Mat& dst) {
-        this->imgProc->histEqualize(src, dst);
+    this->applyFilter(filterFunctions[4]);
+}
+
+void MainWindow::resetImage(){
+    const cv::Mat& image = store.getOriginalImage(this->currentFileName);
+    store.updateImage(this->currentFileName,image);
+    emit imageLoaded(true, image);
+    emit setPreview(image);
+}
+
+void MainWindow::saveFilteredImage(){
+    QPixmap pixImage = ui->shownPic->pixmap(Qt::ReturnByValue);
+    cv::Mat image = QTCV::QPixmap2Mat(pixImage);
+    store.updateImage(this->currentFileName,image);
+    emit setPreview(image);
+}
+
+void MainWindow::updateFileName(const QString& fileName){
+    this->currentFileName = fileName.toStdString();
+    const cv::Mat& image = store.getImage(this->currentFileName);
+    emit imageLoaded(true, image);
+    emit setPreview(image);
+}
+
+
+void MainWindow::showPreview(const cv::Mat& image){
+
+    QLabel* previewPanels[] = {
+        ui->preview_filter_1,
+        ui->preview_filter_2,
+        ui->preview_filter_3,
+        ui->preview_filter_4,
+        ui->preview_filter_5
     };
-    this->applyFilter(filter);
+
+    if (image.empty()){
+        for (const auto& previewPanel: previewPanels)
+            previewPanel->clear();
+        ui->shownPic->clear();
+        ui->shownFreqPic->clear();
+        return;
+    }
+
+    cv::Mat resizedImage;
+    cv::resize(image, resizedImage, cv::Size(image.cols/4,image.rows/4));
+
+    int width = lround(double(image.cols)/image.rows * ui->preview_filter_1->height());
+    for (size_t counter = 0; counter < 5; counter++){
+        previewPanels[counter]->setFixedWidth(width);
+        cv::Mat filteredResizedImage;
+        filterFunctions[counter](resizedImage,filteredResizedImage);
+        previewPanels[counter]->setPixmap(QTCV::mat2QPixmap(filteredResizedImage));
+    }
+}
+
+void MainWindow::deleteCurrentImage(){
+    const QString& currenImageName = ui->imageNamesComboBox->currentText();
+    store.deleteImage(currenImageName.toStdString());
+    ui->imageNamesComboBox->removeItem(ui->imageNamesComboBox->currentIndex());
+    if (ui->imageNamesComboBox->count() > 0){
+        ui->imageNamesComboBox->setCurrentIndex(0);
+        const QString& newImageName = ui->imageNamesComboBox->itemText(0);
+        const cv::Mat& image = store.getImage(newImageName.toStdString());
+        this->currentFileName = newImageName.toStdString();
+        emit imageLoaded(true, image);
+        emit setPreview(image);
+    } else {
+        cv::Mat emptyImage;
+        emit setPreview(emptyImage);
+    }
 
 }
