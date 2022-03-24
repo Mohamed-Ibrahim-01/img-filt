@@ -1,4 +1,5 @@
 #include "ImgProc.h"
+#include "fourier_transform.h"
 #include "histogramEqualization.h"
 
 #include "opencv2/imgproc/imgproc.hpp"
@@ -39,7 +40,27 @@ void OpenCvImgProc::highPassFilter(const cv::Mat& src, cv::Mat& dst, FilterMode 
 }
 
 void OpenCvImgProc::highPassFilterFreq(const cv::Mat& src, cv::Mat& dst) const {
-    dst = src.clone();
+    cv::Mat mask = highPassMask(getfourierPaddedSize(src), 120);
+    freqFilter(src, dst, mask);
+}
+
+void OpenCvImgProc::freqFilter(const cv::Mat& src, cv::Mat& dst, cv::Mat mask) const {
+    if (src.channels() > 1){
+        throw std::invalid_argument("Mat convertToFourier(Mat img) only works with 1 channel matrix ");
+    }
+
+    cv::Mat planes[2];
+    cv::Mat realPlane, imaginaryPlane;
+    fourierPlanes(src, planes);
+
+    fftShift(planes);
+    applyFFtFilter(planes, mask);
+    ifftShift(planes);
+
+    cv::merge(planes, 2, dst);
+    inverseFourier(dst, dst);
+
+    dst = prepMatForConverting(dst);
     return;
 }
 
@@ -57,4 +78,13 @@ void OpenCvImgProc::rgbFilter(const cv::Mat& src, cv::Mat& dst, std::function<vo
     std::vector<cv::Mat> channels = {HSVChannels[0],HSVChannels[1],HSVChannels[2]};
     cv::merge(channels,dst);
     cv::cvtColor(dst,dst, cv::COLOR_HSV2BGR);
+}
+
+cv::Mat OpenCvImgProc::highPassMask(cv::Size maskSize, int rectSize) const {
+    int cx = maskSize.width/2;
+    int cy = maskSize.height/2;
+    int rectTopLeftX = cx-(rectSize/2), rectTopLeftY = cy-(rectSize/2);
+    cv::Mat mask = cv::Mat::ones(maskSize, CV_32F);
+    mask(cv::Rect(rectTopLeftX, rectTopLeftY, rectSize, rectSize)) = 0;
+    return mask;
 }
