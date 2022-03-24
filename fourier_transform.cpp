@@ -142,3 +142,72 @@ cv::Mat prepMatForConverting(const cv::Mat& src){
     src.convertTo(temp,CV_8U,255.0/(maxVal  -  minVal),  -minVal);
     return temp;
 }
+/**
+  * Gets the inverse of fourier (idft) of non shifted fourier transformed image.
+  *
+  * @param src: The image to create planes of.
+  * @param planes: The array to output the dft into.
+  *
+ */
+void fourierPlanes(const cv::Mat& src, cv::Mat planes[]){
+    cv::Mat padded = adjustSize(src);
+    planes[0] = cv::Mat_<float>(padded);
+    planes[1] = cv::Mat::zeros(padded.size(), CV_32F);
+    cv::Mat complexI = constructComplexNumbers(planes);
+    cv::dft(complexI, complexI);
+    cv::split(complexI, planes);
+}
+
+cv::Size getfourierPaddedSize(const cv::Mat& src){
+    cv::Mat padded = adjustSize(src);
+    return padded.size();
+}
+
+/**
+  * Gets the inverse of fourier (idft) of non shifted fourier transformed image.
+  *
+  * @param complexSrc: The dft of image with both planes.
+  * @param dst: The Mat to output the idft into.
+  *
+ */
+void inverseFourier(const cv::Mat& complexSrc, cv::Mat& dst){
+    cv::idft(complexSrc, dst, cv::DFT_REAL_OUTPUT);
+    cv::normalize(dst, dst, 0, 1, cv::NORM_MINMAX);
+    dst = cv::Mat(dst, cv::Rect(0, 0, dst.cols, dst.rows));
+}
+
+/**
+  * Rearranges a Fourier transform X by shifting the zero-frequency component to the center of the array.
+  *
+  * @param planes: The dft output as separated planes planes[0] -> real, planes[1] -> imaginary.
+  *
+ */
+void fftShift(cv::Mat planes[]){
+    std::array<cv::Mat,4> real_quarters = makeQuarters(planes[0]);
+    real_quarters = reArrangeQuarters(real_quarters);
+
+    std::array<cv::Mat,4> im_quarters = makeQuarters(planes[1]);
+    im_quarters = reArrangeQuarters(im_quarters);
+}
+
+/**
+  * A method for convenience that returns shifted fourier transform to original
+  *
+  * @param planes: The dft output as separated planes planes[0] -> real, planes[1] -> imaginary.
+  *
+ */
+void ifftShift(cv::Mat planes[]){
+    fftShift(planes);
+}
+
+/**
+  * Filtering in frequency domain with multiply frequency domain filter(mask) with frequncy domain image.
+  *
+  * @param planes: The dft output as separated planes planes[0] -> real, planes[1] -> imaginary.
+  * @param mask: The frequncy domain filter to appply
+  *
+ */
+void applyFFtFilter(cv::Mat planes[], const cv::Mat& mask){
+    planes[0] = planes[0].mul(mask);
+    planes[1] = planes[1].mul(mask);
+}

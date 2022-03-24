@@ -14,4 +14,10 @@ std::array<cv::Mat,4> makeQuarters(const cv::Mat& magI);
 std::array<cv::Mat,4> reArrangeQuarters(const std::array<cv::Mat,4>& quarters);
 cv::Mat prepMatForConverting(const cv::Mat& src);
 
+cv::Size getfourierPaddedSize(const cv::Mat& src);
+void fourierPlanes(const cv::Mat& src, cv::Mat planes[]);
+void fftShift(cv::Mat planes[]);
+void ifftShift(cv::Mat planes[]);
+void applyFFtFilter(cv::Mat planes[], const cv::Mat& mask);
+void inverseFourier(const cv::Mat& complexSrc, cv::Mat& dst);
 #endif // FOURIER_TRANSFORM_H
