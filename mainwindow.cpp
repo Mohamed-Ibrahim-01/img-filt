@@ -33,6 +33,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) ,store(ImgStore::g
     connect(ui->imageNamesComboBox, &QComboBox::currentTextChanged, this, &MainWindow::updateFileName);
 
     connect(this, &MainWindow::setPreview, this, &MainWindow::showPreview);
+
+    connect(ui->actiondark, &QAction::triggered, [=](){
+       this->changeTheme(dark);
+    });
+    connect(ui->actionlight, &QAction::triggered, [=](){
+       this->changeTheme(light);
+    });
+
 }
 
 MainWindow::~MainWindow() noexcept{
@@ -206,4 +214,16 @@ void MainWindow::deleteCurrentImage(){
         emit setPreview(emptyImage);
     }
 
+}
+
+void MainWindow::changeTheme(const theme &themeName){
+    QString str = ":qdarkstyle/";
+    str += themeName == dark? "dark":"light";
+    str += "/style.qss";
+//    str = ":qdarkstyle/light/style.qss";
+    QFile themeFile(str);
+    themeFile.open(QFile::ReadOnly | QFile::Text);
+    QTextStream themeText(&themeFile);
+    this->setStyleSheet(themeText.readAll());
+    themeFile.close();
 }

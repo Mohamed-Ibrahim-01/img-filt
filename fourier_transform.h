@@ -13,4 +13,5 @@ cv::Mat prepareMagnitude(const cv::Mat planes[]);
 std::array<cv::Mat,4> makeQuarters(const cv::Mat& magI);
 std::array<cv::Mat,4> reArrangeQuarters(const std::array<cv::Mat,4>& quarters);
 cv::Mat prepMatForConverting(const cv::Mat& src);
+
 #endif // FOURIER_TRANSFORM_H

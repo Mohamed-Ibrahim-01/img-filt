@@ -485,7 +485,15 @@
     <addaction name="actionOpen_File"/>
     <addaction name="actionOpen_File_as_greyscale"/>
    </widget>
+   <widget class="QMenu" name="menutheme">
+    <property name="title">
+     <string>theme</string>
+    </property>
+    <addaction name="actiondark"/>
+    <addaction name="actionlight"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menutheme"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOpen_File">
@@ -496,6 +504,16 @@
   <action name="actionOpen_File_as_greyscale">
    <property name="text">
     <string>Open File as greyscale</string>
+   </property>
+  </action>
+  <action name="actiondark">
+   <property name="text">
+    <string>dark</string>
+   </property>
+  </action>
+  <action name="actionlight">
+   <property name="text">
+    <string>light</string>
    </property>
   </action>
  </widget>

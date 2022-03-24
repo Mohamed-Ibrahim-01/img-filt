@@ -27,6 +27,11 @@ class MainWindow : public QMainWindow {
             GreyScale,
             RGB
         };
+        enum theme {
+            dark,
+            light
+        };
+
         ImgStore& store;
         ImgProc* imgProc;
         std::string currentFileName = "";
@@ -55,6 +60,7 @@ class MainWindow : public QMainWindow {
         void applyFilter(const std::function<void(const cv::Mat&, cv::Mat&)>& filter);
         void displaySpatialandFreq(const cv::Mat& spatialImage, cv::Mat& freqImage);
         void imageLoader(const mode& flag);
+        void changeTheme(const theme& themeName);
 
     private slots:
         void autoUpadateLabelSize();
