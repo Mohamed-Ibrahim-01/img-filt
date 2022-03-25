@@ -19,6 +19,7 @@ class ImgProc {
         virtual void rgbFilter(const cv::Mat& src, cv::Mat& dst, std::function<void(const cv::Mat&, cv::Mat&)> filter) const = 0;
         virtual void freqFilter(const cv::Mat& src, cv::Mat& dst, cv::Mat mask) const = 0;
         virtual cv::Mat highPassMask(cv::Size maskSize, int rectsize) const = 0;
+        virtual cv::Mat lowPassMask(cv::Size maskSize, int rectsize) const = 0;
 };
 
 
@@ -66,6 +67,7 @@ class OpenCvImgProc : public ImgProc {
         void rgbFilter(const cv::Mat& src, cv::Mat& dst, std::function<void(const cv::Mat&, cv::Mat&)> filter) const override;
         void freqFilter(const cv::Mat& src, cv::Mat& dst, cv::Mat mask) const override;
         cv::Mat highPassMask(cv::Size maskSize, int rectSize) const override;
+        cv::Mat lowPassMask(cv::Size maskSize, int rectSize) const override;
 };
 
 #endif // IMGPROC_H

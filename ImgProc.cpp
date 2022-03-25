@@ -21,7 +21,8 @@ void OpenCvImgProc::lowPassFilter(const cv::Mat& src, cv::Mat& dst) const {
 }
 
 void OpenCvImgProc::lowPassFilterFreq(const cv::Mat& src, cv::Mat& dst) const {
-    cv::blur(src, dst, cv::Size(5,5));
+    cv::Mat mask = lowPassMask(getfourierPaddedSize(src), 120);
+    freqFilter(src, dst, mask);
 }
 
 void OpenCvImgProc::highPassFilter(const cv::Mat& src, cv::Mat& dst, FilterMode mode) const {
@@ -86,5 +87,14 @@ cv::Mat OpenCvImgProc::highPassMask(cv::Size maskSize, int rectSize) const {
     int rectTopLeftX = cx-(rectSize/2), rectTopLeftY = cy-(rectSize/2);
     cv::Mat mask = cv::Mat::ones(maskSize, CV_32F);
     mask(cv::Rect(rectTopLeftX, rectTopLeftY, rectSize, rectSize)) = 0;
+    return mask;
+}
+
+cv::Mat OpenCvImgProc::lowPassMask(cv::Size maskSize, int rectSize) const {
+    int cx = maskSize.width/2;
+    int cy = maskSize.height/2;
+    int rectTopLeftX = cx-(rectSize/2), rectTopLeftY = cy-(rectSize/2);
+    cv::Mat mask = cv::Mat::zeros(maskSize, CV_32F);
+    mask(cv::Rect(rectTopLeftX, rectTopLeftY, rectSize, rectSize)) = 1;
     return mask;
 }
