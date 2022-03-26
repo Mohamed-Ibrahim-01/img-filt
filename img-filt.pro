@@ -41,8 +41,8 @@ HEADERS += \
 FORMS += \
     mainwindow.ui
 
-RESOURCES += qdarkstyle/light/style.qrc \
-             qdarkstyle/dark/style.qrc
+RESOURCES += qdarkstyle/light/lightStyle.qrc \
+             qdarkstyle/dark/darkStyle.qrc
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

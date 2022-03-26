@@ -21,27 +21,48 @@ void OpenCvImgProc::lowPassFilter(const cv::Mat& src, cv::Mat& dst) const {
 }
 
 void OpenCvImgProc::lowPassFilterFreq(const cv::Mat& src, cv::Mat& dst) const {
-    cv::Mat mask = lowPassMask(getfourierPaddedSize(src), 120);
+    if (src.channels() > 1) {
+        cv::cvtColor(src, dst, cv::COLOR_BGR2HSV);
+        cv::Mat HSVChannels[3];
+        cv::split(dst, HSVChannels);
+        cv::Mat mask = lowPassMask(getfourierPaddedSize(HSVChannels[2]));
+        freqFilter(HSVChannels[2], HSVChannels[2], mask);
+        std::vector<cv::Mat> channels = {HSVChannels[0],HSVChannels[1],HSVChannels[2]};
+        cv::merge(channels,dst);
+        cv::cvtColor(dst,dst, cv::COLOR_HSV2BGR);
+        return;
+    }
+    cv::Mat mask = lowPassMask(getfourierPaddedSize(src));
     freqFilter(src, dst, mask);
 }
 
-void OpenCvImgProc::highPassFilter(const cv::Mat& src, cv::Mat& dst, FilterMode mode) const {
+void OpenCvImgProc::highPassFilter(const cv::Mat& src, cv::Mat& dst) const {
     std::function<void(const cv::Mat&, cv::Mat&)> filter = [=](const cv::Mat& src, cv::Mat& dst) {
         cv::Mat kernel{-1, 0, 1, -2, 0, 2, -1, 0, 1};
         cv::filter2D(src, dst, -1, kernel);
     };
 
-    if(mode == MULTI_CHANNEL){
-        filter(src, dst);
+    if(src.channels() > 1){
+        this->rgbFilter(src, dst, filter);
         return;
     }
 
-    this->rgbFilter(src, dst, filter);
-    return;
+    filter(src, dst);
 }
 
 void OpenCvImgProc::highPassFilterFreq(const cv::Mat& src, cv::Mat& dst) const {
-    cv::Mat mask = highPassMask(getfourierPaddedSize(src), 120);
+    if (src.channels() > 1) {
+        cv::cvtColor(src, dst, cv::COLOR_BGR2HSV);
+        cv::Mat HSVChannels[3];
+        cv::split(dst, HSVChannels);
+        cv::Mat mask = highPassMask(getfourierPaddedSize(HSVChannels[2]));
+        freqFilter(HSVChannels[2], HSVChannels[2], mask);
+        std::vector<cv::Mat> channels = {HSVChannels[0],HSVChannels[1],HSVChannels[2]};
+        cv::merge(channels,dst);
+        cv::cvtColor(dst,dst, cv::COLOR_HSV2BGR);
+        return;
+    }
+    cv::Mat mask = highPassMask(getfourierPaddedSize(src));
     freqFilter(src, dst, mask);
 }
 
@@ -81,18 +102,21 @@ void OpenCvImgProc::rgbFilter(const cv::Mat& src, cv::Mat& dst, std::function<vo
     cv::cvtColor(dst,dst, cv::COLOR_HSV2BGR);
 }
 
-cv::Mat OpenCvImgProc::highPassMask(cv::Size maskSize, int rectSize) const {
+#include <QDebug>
+cv::Mat OpenCvImgProc::highPassMask(cv::Size maskSize) const {
     int cx = maskSize.width/2;
     int cy = maskSize.height/2;
+    int rectSize = lround(cx > cy ? cy * 0.6: cx * 0.6);
     int rectTopLeftX = cx-(rectSize/2), rectTopLeftY = cy-(rectSize/2);
     cv::Mat mask = cv::Mat::ones(maskSize, CV_32F);
     mask(cv::Rect(rectTopLeftX, rectTopLeftY, rectSize, rectSize)) = 0;
     return mask;
 }
 
-cv::Mat OpenCvImgProc::lowPassMask(cv::Size maskSize, int rectSize) const {
+cv::Mat OpenCvImgProc::lowPassMask(cv::Size maskSize) const {
     int cx = maskSize.width/2;
     int cy = maskSize.height/2;
+    int rectSize = lround(cx > cy ? cy * 0.35: cx * 0.35);
     int rectTopLeftX = cx-(rectSize/2), rectTopLeftY = cy-(rectSize/2);
     cv::Mat mask = cv::Mat::zeros(maskSize, CV_32F);
     mask(cv::Rect(rectTopLeftX, rectTopLeftY, rectSize, rectSize)) = 1;

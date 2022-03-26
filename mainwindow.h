@@ -47,8 +47,7 @@ class MainWindow : public QMainWindow {
                     this->imgProc->lowPassFilter(src, dst);
             },
             [=](const cv::Mat& src, cv::Mat& dst) {
-                    auto mode = imgProc->MULTI_CHANNEL;
-                    this->imgProc->highPassFilter(src, dst, mode);
+                    this->imgProc->highPassFilter(src, dst);
             },
             [=](const cv::Mat& src, cv::Mat& dst) {
                     this->imgProc->histEqualize(src, dst);
@@ -72,6 +71,7 @@ class MainWindow : public QMainWindow {
         void updateFileName(const QString& fileName);
         void showPreview(const cv::Mat& image);
         void deleteCurrentImage();
+        void changeFilters();
 
         void applyGaussianFilter();
         void applyMedianFilter();

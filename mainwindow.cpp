@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) ,store(ImgStore::g
     imgProc(new OpenCvImgProc), ui(new Ui::MainWindow){
 
     ui->setupUi(this);
+    this->changeTheme(light);
     connect(ui->actionOpen_File, &QAction::triggered, this, &MainWindow::loadImage);
     connect(ui->actionOpen_File_as_greyscale, &QAction::triggered, this, &MainWindow::loadGreyScaleImage);
     connect(this, &MainWindow::imageLoaded, this, &MainWindow::setLoadedImage);
@@ -34,10 +35,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) ,store(ImgStore::g
 
     connect(this, &MainWindow::setPreview, this, &MainWindow::showPreview);
 
-    connect(ui->actiondark, &QAction::triggered, [=](){
+    connect(ui->spatialFiltersRadioBtn, &QRadioButton::toggled, this, &MainWindow::changeFilters);
+
+
+    connect(ui->actiondark, &QAction::triggered, [=](...){
        this->changeTheme(dark);
     });
-    connect(ui->actionlight, &QAction::triggered, [=](){
+    connect(ui->actionlight, &QAction::triggered, [=](...){
        this->changeTheme(light);
     });
 
@@ -97,7 +101,7 @@ void MainWindow::autoUpadateLabelSize(){
     // setting the height of the shown pic and the shown freq pic to maintain the aspect ratio of the image
     ui->shownPic->setFixedHeight(height);
     ui->shownFreqPic->setFixedHeight(height);
-    this->setMinimumHeight(height+230);
+    this->setMinimumHeight(height+240);
 }
 
 void MainWindow::resizeEvent(QResizeEvent* event) {
@@ -217,13 +221,36 @@ void MainWindow::deleteCurrentImage(){
 }
 
 void MainWindow::changeTheme(const theme &themeName){
-    QString str = ":qdarkstyle/";
-    str += themeName == dark? "dark":"light";
-    str += "/style.qss";
-//    str = ":qdarkstyle/light/style.qss";
+    bool theme = themeName == dark;
+    ui->actiondark->setChecked(theme);
+    ui->actionlight->setChecked(!theme);
+    QString str = theme ? ":qdarkstyle/dark/darkStyle.qss":":qdarkstyle/light/lightStyle.qss";
     QFile themeFile(str);
     themeFile.open(QFile::ReadOnly | QFile::Text);
     QTextStream themeText(&themeFile);
     this->setStyleSheet(themeText.readAll());
     themeFile.close();
+}
+
+void MainWindow::changeFilters(){
+    bool freqFilters = ui->freqFiltersRadioBtn->isChecked();
+    if (freqFilters){
+        this->filterFunctions[2] = [=] (const cv::Mat& src, cv::Mat& dst) {
+            this->imgProc->lowPassFilterFreq(src, dst);
+        };
+        this->filterFunctions[3] = [=] (const cv::Mat& src, cv::Mat& dst) {
+            this->imgProc->highPassFilterFreq(src, dst);
+        };
+        QMessageBox messageBox;
+        messageBox.information(0,"Filters","only low and high pass filters will be in the frequancy domain");
+        messageBox.setFixedSize(500,200);
+    } else {
+        this->filterFunctions[2] = [=] (const cv::Mat& src, cv::Mat& dst) {
+            this->imgProc->lowPassFilter(src, dst);
+        };
+        this->filterFunctions[3] = [=] (const cv::Mat& src, cv::Mat& dst) {
+            this->imgProc->highPassFilter(src, dst);
+        };
+    }
+    emit setPreview(store.getImage(this->currentFileName));
 }
