@@ -102,7 +102,6 @@ void OpenCvImgProc::rgbFilter(const cv::Mat& src, cv::Mat& dst, std::function<vo
     cv::cvtColor(dst,dst, cv::COLOR_HSV2BGR);
 }
 
-#include <QDebug>
 cv::Mat OpenCvImgProc::highPassMask(cv::Size maskSize) const {
     int cx = maskSize.width/2;
     int cy = maskSize.height/2;
