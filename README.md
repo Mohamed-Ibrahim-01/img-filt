@@ -14,3 +14,6 @@ make -f Makefile -j8
 # Run the app
 ./img-filt
 ```
+
+### Demo
+[![Demo](Demo)](./docs/img-filt.mkv)
