@@ -16,4 +16,4 @@ make -f Makefile -j8
 ```
 
 ### Demo
-[![Demo](Demo)](./docs/img-filt.mkv)
+[![Demo](./docs/img-filt.png)](./docs/img-filt.mkv)
