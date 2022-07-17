@@ -1,5 +1,5 @@
 QT       += core gui
-
+QT       += charts
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
@@ -26,6 +26,7 @@ SOURCES += \
     QTCV.cpp \
     fourier_transform.cpp \
     histogramEqualization.cpp \
+    histogramwindow.cpp \
     main.cpp \
     ImgStore.cpp \
     mainwindow.cpp
@@ -36,9 +37,11 @@ HEADERS += \
     fourier_transform.h \
     histogramEqualization.h \
     ImgStore.h \
+    histogramwindow.h \
     mainwindow.h
 
 FORMS += \
+    histogramwindow.ui \
     mainwindow.ui
 
 RESOURCES += qdarkstyle/light/lightStyle.qrc \

@@ -14,20 +14,19 @@
 #include <unordered_map>
 #include <cmath>
 
-void equalization(const cv::Mat& src, cv::Mat& dst){
 
-    // check if the input array is 1 channel and throw an error if not
-    if (src.type() != CV_8UC1){
-        throw "equalization(const cv::Mat& src, cv::Mat& dst) -> unsupported operation";
+void countIntensity(QVector<unsigned long>& greyScaleCounter, const cv::Mat& src){
+    for (int rowCounter = 0; rowCounter < src.rows; rowCounter++){
+        for (int colCounter = 0; colCounter < src.cols; colCounter++){
+
+            const unsigned char& pixelVal = src.at<unsigned char>(rowCounter,colCounter);
+
+            greyScaleCounter[pixelVal] += 1;
+        }
     }
+}
 
-    // the number of possible colors is 256 as it is 8 bit channel
-    std::vector<unsigned long> greyScaleCounter(256,0);
-    unsigned char CDFminIndex = 255;
-    std::unordered_map<int,int> greyScaleMap;
-
-    // scanning the image pixel by pixel and count the number of pixels that have the same value and store it in array where
-    // the index indicates the value of the pixel (ex: value 0 : 300pixels, value 1 : 421pixels, etc..)
+void countIntensityWithCDF(std::vector<unsigned long>& greyScaleCounter, const cv::Mat& src, unsigned char& CDFminIndex){
     for (int rowCounter = 0; rowCounter < src.rows; rowCounter++){
         for (int colCounter = 0; colCounter < src.cols; colCounter++){
 
@@ -40,6 +39,21 @@ void equalization(const cv::Mat& src, cv::Mat& dst){
             greyScaleCounter[pixelVal] += 1;
         }
     }
+}
+
+void equalization(const cv::Mat& src, cv::Mat& dst){
+
+    // check if the input array is 1 channel and throw an error if not
+    if (src.type() != CV_8UC1){
+        throw "equalization(const cv::Mat& src, cv::Mat& dst) -> unsupported operation";
+    }
+
+    // the number of possible colors is 256 as it is 8 bit channel
+    std::vector<unsigned long> greyScaleCounter(256,0);
+    unsigned char CDFminIndex = 255;
+    std::unordered_map<int,int> greyScaleMap;
+
+    countIntensityWithCDF(greyScaleCounter, src, CDFminIndex);
 
 
     // calculating the constent part of the equation (number of possible colors - 1)/(Width * height - CDF min)
