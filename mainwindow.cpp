@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) ,store(ImgStore::g
     connect(ui->filter_4_btn, &QPushButton::released, this, &MainWindow::applyHighPassFilter);
     connect(ui->filter_5_btn, &QPushButton::released, this, &MainWindow::applyHistEqualization);
 
+    connect(ui->showHistBtn, &QPushButton::released, this, &MainWindow::showHist);
     connect(ui->resetBtn, &QPushButton::released, this, &MainWindow::resetImage);
     connect(ui->applyBtn, &QPushButton::released, this, &MainWindow::saveFilteredImage);
     connect(ui->deleteBtn, &QPushButton::released, this, &MainWindow::deleteCurrentImage);
@@ -253,4 +254,35 @@ void MainWindow::changeFilters(){
         };
     }
     emit setPreview(store.getImage(this->currentFileName));
+}
+
+
+void MainWindow::showHist(){
+    if (this->currentFileName == "") return;
+
+    cv::Mat& image = store.getImage(this->currentFileName);
+
+    cv::Mat imageData = image.clone();
+    QVector<QVector<unsigned long>> data(1,QVector<unsigned long>(256,0));
+
+    if (imageData.type() == CV_8UC3) {
+
+        cv::cvtColor(imageData, imageData, cv::COLOR_BGR2HSV);
+        cv::Mat HSVChannels[3];
+        cv::split(imageData, HSVChannels);
+
+        countIntensity(data[0],HSVChannels[2]);
+
+//        new histogramWindow(nullptr,{"intensity"},data,"after")
+        histogramWindow * window= new histogramWindow(nullptr,{"V of HSV"},data,"Histogram \"RGB-image\"");
+        window->show();
+
+    } else {
+
+        countIntensity(data[0],imageData);
+        histogramWindow * window= new histogramWindow(nullptr,{"Intensity"},data,"Histogram \"Grey-image\"");
+        window->show();
+
+    }
+
 }
