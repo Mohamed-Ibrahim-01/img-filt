@@ -7,6 +7,8 @@
 #include <functional>
 #include "ImgStore.h"
 #include "ImgProc.h"
+#include "histogramEqualization.h"
+
 
 
 QT_BEGIN_NAMESPACE
@@ -72,6 +74,7 @@ class MainWindow : public QMainWindow {
         void showPreview(const cv::Mat& image);
         void deleteCurrentImage();
         void changeFilters();
+        void showHist();
 
         void applyGaussianFilter();
         void applyMedianFilter();
@@ -83,6 +86,30 @@ class MainWindow : public QMainWindow {
     signals:
         void imageLoaded(bool loaded, const cv::Mat& image);
         void setPreview(const cv::Mat& image);
+        
+    protected:
+    QPoint pressPos;
+    bool isMoving{false};
+    void mousePressEvent(QMouseEvent* event){
+           //save the press position (this is relative to the current widget)
+           pressPos= event->pos();
+           isMoving= true;
+       }
+       void mouseMoveEvent(QMouseEvent* event){
+           //isMoving flag makes sure that the drag and drop event originated
+           //from within the titlebar, because otherwise the window shouldn't be moved
+           if(isMoving){
+               //calculate difference between the press position and the new Mouse position
+               //(this is relative to the current widget)
+               QPoint diff= event->pos() - pressPos;
+               //move the window by diff
+               window()->move(window()->pos()+diff);
+           }
+       }
+       void mouseReleaseEvent(QMouseEvent* /*event*/){
+           //drag and drop operation end
+           isMoving= false;
+       }
 };
 
 #endif // MAINWINDOW_H
